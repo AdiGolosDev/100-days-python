@@ -35,12 +35,15 @@ computer = random.randint(0, 2)
 
 player = int(input("Please choose rock, paper or scissors: 1 - rock, 2 - paper, 3 - scissors")) - 1
 
-if (player == 0 and computer == 2) or (player == 1 and computer == 0) or (player == 1 and computer == 3) or (player == 2 and computer == 1):
-    print("You Win!")
-elif player == computer:
-    print("Draw")
+
+print(f"Player chose: {list[player]}\n Computer chose: {list[computer]}\n")
+
+if not 1 <= player <= 3:
+    print("You did not enter a correct choice")
 else:
-    print("You Lose!")
-
-
-print(f"Player chose: {list[player]}\n Computer chose: {list[computer]}")
+    if (player == 0 and computer == 2) or (player == 1 and computer == 0) or (player == 2 and computer == 3):
+        print("You Win!")
+    elif player == computer:
+        print("Draw")
+    else:
+        print("You Lose!")
