@@ -6,4 +6,18 @@ states_of_america = ["Delaware", "Pennsylvania", "New Jersey", "Georgia", "Conne
                      "North Dakota", "South Dakota", "Montana", "Washington", "Idaho", "Wyoming", "Utah", "Oklahoma",
                      "New Mexico", "Arizona", "Alaska", "Hawaii"]
 
-print(states_of_america)
+#index error /// list has items from index 0 -- 49 \ nothing at index 50
+# print(states_of_america[50])
+
+fruits = ["cherry", "apple", "pear"]
+vegetables = ["cucumber", "kale", "spinnach"]
+fruits_and_vegetables = [fruits, vegetables]
+
+for item in fruits_and_vegetables:
+     for i in item:
+        print(i)
+
+for item in fruits_and_vegetables:
+    print(item)
+
+print(fruits_and_vegetables[1][2])
