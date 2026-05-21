@@ -30,10 +30,10 @@ password_copy = password[:]
 
 new_password = ""
 
-for character in password:
+for x in range(len(password)): # better readibility than previous { for character in password: }
+                               # since character in password doesn't do anything except loop once for every character
     current = random.choice(password_copy)
     new_password += current
     password_copy.remove(current)
-
 
 print(f"Your new randomly generated password is: {new_password}")
