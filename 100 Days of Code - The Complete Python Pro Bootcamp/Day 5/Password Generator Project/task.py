@@ -29,8 +29,6 @@ new_password = ""
 for char in password:
     new_password += char
 
-
-
 # password_copy = password[:]
 #     # copies over entire list
 #     # apparently this is a shallow copy, but it doesn't matter since my list doesn't have other lists within it
