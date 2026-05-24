@@ -7,16 +7,34 @@ def encrypt(original_text, key):
     original_text = original_text.lower()
     result = ""
     for char in original_text:
-        letter = alphabet[(alphabet.index(char) + key) % 26]
-        result += letter
+        if char == " ":
+            result += " "
+        elif char == ",":
+            result += ","
+        elif char == ".":
+            result += "."
+        elif char not in alphabet:
+            result += "#"
+        else:
+            letter = alphabet[(alphabet.index(char) + key) % len(alphabet)]
+            result += letter
     return result
 
 def decrypt(original_text, key):
     original_text = original_text.lower()
     result = ""
     for char in original_text:
-        letter = alphabet[(alphabet.index(char) - key) % 26]
-        result += letter
+        if char == " ":
+            result += " "
+        elif char == ",":
+            result += ","
+        elif char == ".":
+            result += "."
+        elif char not in alphabet:
+            result += "#"
+        else:
+            letter = alphabet[(alphabet.index(char) - key) % len(alphabet)]
+            result += letter
     return result
 
 def ceaser_cypher(original_text, key, encryption=True):
@@ -28,7 +46,10 @@ def ceaser_cypher(original_text, key, encryption=True):
 
 again = True
 while again:
-    print(f"Welcome to: \n {art.logo}\n")
+    print(f"Welcome to: \n {art.logo}"
+          f"\n This program encodes and decodes all messages in lower case."
+          f"\nUnaffected symbols are: space, comma, dot."
+          f"\nPlease note: all upper case letters and non-mentioned symbols are replaced with a hashtag #")
     direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
     if direction == "encode":
         en = True
@@ -39,10 +60,6 @@ while again:
         exit()
 
     text = input("Type your message:\n").lower()
-    for char in text:
-        if char not in alphabet:
-            print("Invalid symbol in text")
-            exit()
 
     shift = int(input("Type the shift number:\n"))
 
