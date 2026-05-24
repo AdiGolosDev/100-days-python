@@ -1,32 +1,52 @@
-# TODO-1: Import and print the logo from art.py when the program starts.
+import art
 
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+            'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+def encrypt(original_text, key):
+    original_text = original_text.lower()
+    result = ""
+    for char in original_text:
+        letter = alphabet[(alphabet.index(char) + key) % 26]
+        result += letter
+    return result
 
-# TODO-2: What happens if the user enters a number/symbol/space?
+def decrypt(original_text, key):
+    original_text = original_text.lower()
+    result = ""
+    for char in original_text:
+        letter = alphabet[(alphabet.index(char) - key) % 26]
+        result += letter
+    return result
 
+def ceaser_cypher(original_text, key, encryption=True):
+    if encryption:
+        result = encrypt(original_text=original_text, key=key)
+    else:
+        result = decrypt(original_text=original_text, key=key)
+    return result
 
-def caesar(original_text, shift_amount, encode_or_decode):
-    output_text = ""
+again = True
+while again:
+    print(f"Welcome to: \n {art.logo}\n")
+    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
+    if direction == "encode":
+        en = True
+    elif direction == "decode":
+        en = False
+    else:
+        print("Invalid input!")
+        exit()
 
-    for letter in original_text:
-        if encode_or_decode == "decode":
-            shift_amount *= -1
+    text = input("Type your message:\n").lower()
+    for char in text:
+        if char not in alphabet:
+            print("Invalid symbol in text")
+            exit()
 
-        shifted_position = alphabet.index(letter) + shift_amount
-        shifted_position %= len(alphabet)
-        output_text += alphabet[shifted_position]
-    print(f"Here is the {encode_or_decode}d result: {output_text}")
+    shift = int(input("Type the shift number:\n"))
 
+    print(ceaser_cypher(text, shift, en))
 
-# TODO-3: Can you figure out a way to restart the cipher program?
-
-
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
-text = input("Type your message:\n").lower()
-shift = int(input("Type the shift number:\n"))
-
-caesar(original_text=text, shift_amount=shift, encode_or_decode=direction)
-
-
+    again = input("Do you want to use the program again? (type 'yes' if you do):\n").lower() == "yes"
 
