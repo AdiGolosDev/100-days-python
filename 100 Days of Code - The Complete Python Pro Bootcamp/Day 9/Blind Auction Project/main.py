@@ -7,8 +7,11 @@ while again:
     print(("\n" * 20) + art.logo + "\n")
 
     name = input("Please enter your name: \n")
+    if name not in bids:
+        bids[name] = []
+
     bid = int(input("Please enter your bid: \n"))
-    bids[name] = bid
+    bids[name].append(bid)
 
     a = input("Are there any other bids? "
                   "(type \"yes\" if there are, and anything else if there are not\n")
@@ -18,8 +21,9 @@ while again:
 final = 0
 person = ""
 for key in bids:
-    if bids[key] > final:
-        final = bids[key]
-        person = key
+    for bid in bids[key]:
+        if bid > final:
+            final = bid
+            person = key
 
 print(f"\nCongratulations {person}! You won with your bid of ${final}\n")
