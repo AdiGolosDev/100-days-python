@@ -66,4 +66,3 @@ while again:
     print(ceaser_cypher(text, shift, en))
 
     again = input("Do you want to use the program again? (type 'yes' if you do):\n").lower() == "yes"
-
