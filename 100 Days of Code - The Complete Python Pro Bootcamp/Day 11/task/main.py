@@ -7,10 +7,33 @@ card_dict = {"Ace": 0, "Two": 1, "Three": 2, "Four": 3, "Five": 4, "Six": 5, "Se
 tokens = int(input(" * How many tokens will each player start with?\n"))
 
 class Player:
-    def __init__(self, name, tokens, hand):
+    def __init__(self, name, tokens, hand, bet):
         self.name = name
         self.tokens = tokens
         self.hand = hand
+        self.bet = bet
+
+    def draw(self):
+        self.hand.append(random.choice(list(card_dict.keys())))
+
+    def play_round(self):
+        while input("Would you like to HIT or STAY? (hit / stay):\n").lower() == "hit":
+            self.draw()
+            print_hand(players["computer"])
+            print_hand(self)
+            if get_player_total(self) > 21:
+                print(f" * * * {self.name.title()} BUSTS * * *")
+                break
+            elif get_player_total(self) == 21:
+                print(f" * * * {self.name.title()} WINS * * * ")
+                break
+        if get_player_total(self) == 21:
+            print(f" * * * {self.name.title()} won 1.5 times their bet * * * ")
+        elif get_player_total(self) < 21:
+            print(f" * * * {self.name.title()} chose to stay at {get_player_total(self)} * * * ")
+        else:
+            return
+
 
 def initialize_player_count():
     """Gets player count which can only be between 1 and 3 inclusive"""
@@ -32,9 +55,11 @@ def initialize_players():
     for i in range(player_count):
         hand = []
         current_name = input(f" * Player {i + 1} * Please enter your name:\n")
-        players[current_name] = Player(current_name, tokens, hand)
+        bet = int(input(f" * Player {i + 1} * How much would you like to bet?\n"))
+        players[current_name] = Player(current_name, tokens, hand, bet)
     hand = []
-    players["computer"] = Player("computer", tokens, hand)
+    bet = 0
+    players["computer"] = Player("computer", tokens, hand, bet)
     return players
 
 def print_hand(player):
@@ -45,6 +70,13 @@ def print_hand(player):
         print(f"* {card}")
         total += cards[card_dict[card]]
 
+    return total
+
+def get_player_total(player):
+    """Gets total of cards for player"""
+    total = 0
+    for card in player.hand:
+        total += cards[card_dict[card]]
     return total
 
 def update_display():
@@ -65,6 +97,22 @@ def play_game():
             players[player].hand.append(random.choice(list(card_dict.keys())))
 
         update_display()
+
+        for player in players:
+            if players[player].name == "computer":
+                break
+
+            print(f"{players[player].name.title()}'s turn:")
+            if get_player_total(players[player]) > 21:
+                print(f" * * * {players[player].name.title()} BUSTS * * * ")
+            elif get_player_total(players[player]) == 21:
+                print(f" * * * {players[player].name.title()} won 1.5 times their bet * * * ")
+            else:
+                players[player].play_round()
+
+            update_display()
+
+
         not_over = False
 
 players = initialize_players()
