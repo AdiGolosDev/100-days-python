@@ -5,7 +5,9 @@ cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 card_dict = {"Ace": 0, "Two": 1, "Three": 2, "Four": 3, "Five": 4, "Six": 5, "Seven": 6,
              "Eight": 7, "Nine": 8, "Ten": 9, "Jack": 10, "Queen": 11, "King": 12, "???": 13}
 tokens = int(input(" * How many tokens will each player start with?\n"))
+initial_tokens = tokens
 stay_list = []
+to_remove = []
 
 class Player:
     def __init__(self, name, tokens, hand, bet):
@@ -16,7 +18,7 @@ class Player:
 
     def draw(self):
         """Draws one card for the player"""
-        self.hand.append(random.choice(list(card_dict.keys())))
+        self.hand.append(random.choice(list(card_dict.keys())[:-1]))
 
     def play_round(self):
         """Plays a round of blackjack between the player and computer"""
@@ -82,7 +84,14 @@ def get_player_total(player):
     """Gets total of cards for player"""
     total = 0
     for card in player.hand:
-        if card_dict[card] != 13:
+        if card_dict[card] == 13:
+            continue
+        elif card_dict[card] == 0:
+            if total + cards[card_dict[card]] > 21:
+                total += 1
+            else:
+                total += cards[card_dict[card]]
+        else:
             total += cards[card_dict[card]]
     return total
 
@@ -106,6 +115,8 @@ def update_display():
 def play_game():
     """Plays a game of blackjack"""
     print(art.logo + "\n\n")
+    global player_count
+    player_count = get_player_count()
     not_over = True
     while not_over:
         for player in players:
@@ -124,13 +135,11 @@ def play_game():
                 players["computer"].tokens += players[player].bet
                 players[player].bet = 0
             elif get_player_total(players[player]) == 21:
-                print(f" * * * {players[player].name.title()} won 1.5 times their bet * * * ")
                 players[player].tokens += int(2.5 * players[player].bet)
                 players["computer"].tokens -= int(2.5 * players[player].bet) - players[player].bet
                 players[player].bet = 0
             else:
                 players[player].play_round()
-            update_display()
 
         players["computer"].hand.pop()
         while get_player_total(players["computer"]) < 17:
@@ -157,11 +166,30 @@ def play_game():
                     players["computer"].tokens += players[name].bet
                     players[name].bet = 0
 
-        update_display()
         if input("Will the game continue? (y/n): ").lower() != "y":
             not_over = False
+            print("Final results:\n")
+            update_display()
         for player in players:
+            if players[player].name == "computer":
+                players[player].hand = []
+                break
+            if input(f"Mr. / Mrs. {players[player].name.title()}, do you wish to continue? (y/n):\n").lower() != "y":
+                to_remove.append(player)
             players[player].hand = []
+
+        for player in to_remove:
+            print(f"{players[player].name.title()} ran away with {players[player].tokens - initial_tokens} tokens!\n")
+            del players[player]
+        stay_list.clear()
+        to_remove.clear()
+
+        for player in players:
+            if players[player].name == "computer":
+                break
+            players[player].bet = int(input(f" * {players[player].name.title()} * "
+                                            f"How much would you like to bet? (remaining: {players[player].tokens})\n"))
+            players[player].tokens -= players[player].bet
 
 players = initialize_players()
 play_game()
