@@ -18,7 +18,7 @@ def play_round(difficulty):
     global player_choice
     attempts_remaining = difficulty
     number = random.randint(1, 100)
-    print("I am thinking of a number between 1 and 100\n Try to guess what it is!\n")
+    print(f"I am thinking of a number between 1 and 100\n Try to guess what it is!\nAttempts remaining: {attempts_remaining}\n")
     while player_choice != number:
         if attempts_remaining == 0:
             print(f"You didn't manage to guess it within {difficulty} tries...\nYou lose...\n"
@@ -32,6 +32,7 @@ def play_round(difficulty):
             print(f"You guessed too high!")
         elif player_choice < number:
             print(f"You guessed too low!")
+        print(f"Attempts remaining: {attempts_remaining}\n")
 
 def play_game():
     global player_choice
