@@ -55,7 +55,7 @@ def initialize_player_count():
     """Gets player count which can only be between 1 and 3 inclusive"""
     player_count = 1
     player_count = int(input(" * Please enter how many players will be participating besides the computer: (max: 3)\n"))
-    if  player_count < 0 or player_count > 3:
+    if  player_count <= 0 or player_count > 3:
         print(" * Invalid input, please enter again:")
         initialize_player_count()
     return player_count
