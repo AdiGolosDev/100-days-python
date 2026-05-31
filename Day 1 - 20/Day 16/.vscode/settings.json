@@ -3,5 +3,6 @@
     "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false,
     "github.copilot.nextEditSuggestions.enabled": false,
     "github.copilot.nextEditSuggestions.extendedRange": false,
-    "github.copilot.nextEditSuggestions.fixes": false
+    "github.copilot.nextEditSuggestions.fixes": false,
+    "python.terminal.executeInFileDir": true
 }
