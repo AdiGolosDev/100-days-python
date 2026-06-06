@@ -1,13 +1,19 @@
 from turtle import Turtle, Screen
 import random
+from painting import rgb_colors
 
 screen = Screen()
 screen.colormode(255)
 
 directions = [0, 90, 180, 270]
 
+#size 20
+#spaced 50
+#10 x 10
+
+
 klokan = Turtle()
-klokan.shape("turtle")
+klokan.shape("circle")
 klokan.width(3)
 
 def draw_dashed_line():
@@ -46,9 +52,19 @@ def draw_spirograph(amount):
         klokan.color(change_color())
         klokan.circle(100)
         klokan.setheading(klokan.heading() + 360 / amount)
+
+def paint_dots():
+    klokan.penup()
+    klokan.hideturtle()
+    klokan.goto(-250, -250)
+    for _ in range(10):
+        for _ in range(10):
+            klokan.dot(20, random.choice(rgb_colors))
+            klokan.forward(50)
+        klokan.goto(-250, klokan.ycor() + 50)
         
 
 klokan.speed(0)
-draw_spirograph(100)
+paint_dots()
 
 screen.exitonclick()
