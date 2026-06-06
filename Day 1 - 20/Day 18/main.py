@@ -8,7 +8,7 @@ directions = [0, 90, 180, 270]
 
 klokan = Turtle()
 klokan.shape("turtle")
-klokan.width(10)
+klokan.width(3)
 
 def draw_dashed_line():
     for i in range(4):
@@ -40,9 +40,15 @@ def random_walk():
         klokan.color(change_color())
         klokan.forward(22)
         klokan.setheading(random.choice(directions))
+
+def draw_spirograph(amount):
+    for _ in range(amount):
+        klokan.color(change_color())
+        klokan.circle(100)
+        klokan.setheading(klokan.heading() + 360 / amount)
         
 
 klokan.speed(0)
-random_walk()
+draw_spirograph(100)
 
 screen.exitonclick()
