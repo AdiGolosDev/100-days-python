@@ -15,11 +15,17 @@ def move_left():
 def move_right():
     klokan.right(10)
 
+def clear():
+    klokan.clear()
+    klokan.penup()
+    klokan.home()
+    klokan.pendown()
+
 screen.listen()
 screen.onkey(key="w", fun=move_forward)
 screen.onkey(key="s", fun=move_backward)
 screen.onkey(key="a", fun=move_left)
 screen.onkey(key="d", fun=move_right)
-screen.onkey(key="c", fun=klokan.clear)
+screen.onkey(key="c", fun=clear)
 
 screen.exitonclick()
