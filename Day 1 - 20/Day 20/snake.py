@@ -17,14 +17,28 @@ class Snake:
             snake_body.penup()
             snake_body.goto(pos)
             self.snake_blocks.insert(0, snake_body)
+        self.head = self.snake_blocks[len(self.snake_blocks)-1]
 
-    def move(self, heading=None):
-         if heading != None:
-             self.current_heading = heading
+    def move(self):
          for block in self.snake_blocks:
             if block != self.snake_blocks[len(self.snake_blocks) - 1]:
                 block.goto(self.snake_blocks[self.snake_blocks.index(block) + 1].position())
             else:
-                block.setheading(self.current_heading)
-                block.forward(20)
-                
+                self.head.forward(20)
+
+    def up(self):
+        if self.head.heading() != SOUTH:
+            self.head.setheading(NORTH)
+
+    def down(self):
+        if self.head.heading() != NORTH:
+            self.head.setheading(SOUTH)
+
+    def left(self):
+        if self.head.heading() != EAST:
+            self.head.setheading(WEST)
+
+    def right(self):
+        if self.head.heading() != WEST:
+            self.head.setheading(EAST)
+

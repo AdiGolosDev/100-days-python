@@ -18,10 +18,10 @@ screen.update()
 gp = Snake()
 
 screen.listen()
-screen.onkey(lambda: gp.move(NORTH), "Up")
-screen.onkey(lambda: gp.move(SOUTH), "Down")
-screen.onkey(lambda: gp.move(WEST), "Left")
-screen.onkey(lambda: gp.move(EAST), "Right")
+screen.onkey(gp.up, "Up")
+screen.onkey(gp.down, "Down")
+screen.onkey(gp.left, "Left")
+screen.onkey(gp.right, "Right")
 
 screen.update()
 
