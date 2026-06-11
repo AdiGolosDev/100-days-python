@@ -42,3 +42,6 @@ class Snake:
         if self.head.heading() != WEST:
             self.head.setheading(EAST)
 
+    def grow(self):
+        pass
+

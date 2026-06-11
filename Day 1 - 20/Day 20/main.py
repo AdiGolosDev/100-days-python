@@ -1,6 +1,7 @@
 from turtle import Screen, Turtle
 import time
 from snake import Snake
+from food import Food
 
 EAST = 0
 NORTH = 90
@@ -24,6 +25,8 @@ screen.onkey(gp.left, "Left")
 screen.onkey(gp.right, "Right")
 
 screen.update()
+
+food = Food()
 
 game_on = True
 while game_on:
