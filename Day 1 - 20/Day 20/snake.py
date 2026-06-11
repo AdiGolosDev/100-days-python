@@ -25,6 +25,7 @@ class Snake:
                 block.goto(self.snake_blocks[self.snake_blocks.index(block) + 1].position())
             else:
                 self.head.forward(20)
+            block.showturtle()
 
     def up(self):
         if self.head.heading() != SOUTH:
@@ -43,5 +44,23 @@ class Snake:
             self.head.setheading(EAST)
 
     def grow(self):
-        pass
+        snake_body = Turtle("square")
+        snake_body.hideturtle()
+        snake_body.color("black")
+        snake_body.penup()
+        self.snake_blocks.insert(0, snake_body)
 
+    def out_of_bounds(self):
+        if -290 > self.head.xcor() or self.head.xcor() > 290:
+            return True
+        elif -290 > self.head.ycor() or self.head.ycor() > 290:
+            return True
+        else:
+            return False
+    
+    def collides_with_self(self):
+        for block in self.snake_blocks[:-1]:
+            if self.head.distance(block) < 20:
+                return True
+        return False
+        
