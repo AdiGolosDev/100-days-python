@@ -1,15 +1,20 @@
 from turtle import Turtle, Screen
 from score import Score
 from paddle import Paddle
-
+from ball import Ball
+import time
 
 screen = Screen()
 screen.setup(width=800, height=600)
 screen.bgcolor("black")
 screen.title("Python pong")
+screen.tracer(0)
 
 r_paddle = Paddle(350)
 l_paddle = Paddle(-350)
+ball = Ball()
+score = Score()
+score.update_score("")
 
 screen.listen()
 screen.onkey(r_paddle.up, "Up")
@@ -29,7 +34,22 @@ while net.ycor() != 320:
     net.penup()
     net.forward(20)
 
-score = Score()
-score.update_score()
+game_on = True
+while game_on:
+    screen.update()
+    time.sleep(0.05)
+    ball.move()
+
+    if ball.distance(r_paddle) < 20 or ball.distance(l_paddle) < 20:
+        ball.x_move *= -1
+    
+    if ball.xcor() > 370:
+        score.update_score("left")
+        ball.restart()
+        time.sleep(0.5)
+    elif ball.xcor() < -370:
+        score.update_score("right")
+        ball.restart()
+        time.sleep(0.5)
 
 screen.exitonclick()

@@ -10,6 +10,11 @@ class Score(Turtle):
         self.goto(0,250)
         self.color("white")
 
-    def update_score(self):
+    def update_score(self, point_winner):
         self.clear()
-        self.write(f"{self.left_score}          {self.right_score}", align="center", font=("Arial", 30, "normal"))
+        if point_winner == "left":
+            self.left_score += 1
+        elif point_winner == "right":
+            self.right_score += 1
+
+        self.write(f"{self.left_score}            {self.right_score}", align="center", font=("Arial", 30, "normal"))
