@@ -34,22 +34,26 @@ while net.ycor() != 320:
     net.penup()
     net.forward(20)
 
+speed = 0.1
 game_on = True
 while game_on:
     screen.update()
-    time.sleep(0.05)
+    time.sleep(speed)
     ball.move()
 
     if ball.distance(r_paddle) < 20 or ball.distance(l_paddle) < 20:
         ball.x_move *= -1
+        speed *= 0.95
     
     if ball.xcor() > 370:
         score.update_score("left")
         ball.restart()
+        speed = 0.1
         time.sleep(0.5)
     elif ball.xcor() < -370:
         score.update_score("right")
         ball.restart()
+        speed = 0.1
         time.sleep(0.5)
 
 screen.exitonclick()
