@@ -60,7 +60,7 @@ class Snake:
     
     def collides_with_self(self):
         for block in self.snake_blocks[:-1]:
-            if self.head.distance(block) < 20:
+            if self.head.distance(block) < 10:
                 return True
         return False
         
