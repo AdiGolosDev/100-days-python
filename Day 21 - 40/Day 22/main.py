@@ -48,7 +48,7 @@ while game_on:
     if ball.xcor() > 370:
         score.update_score("left")
         ball.restart()
-        speed = 0.1
+        speed = 0.9
         time.sleep(0.5)
     elif ball.xcor() < -370:
         score.update_score("right")
