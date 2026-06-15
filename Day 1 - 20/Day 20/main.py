@@ -15,7 +15,7 @@ screen.bgcolor("grey")
 screen.title("The Python Grows!!!")
 screen.tracer(0)
 
-gp = Snake()
+gp = Snake() #stands for growing python
 score = Score()
 food = Food()
 
@@ -34,17 +34,17 @@ while game_on:
     gp.move()
 
     if gp.out_of_bounds():
-        game_on = False
-        score.game_over()
+        score.reset()
+        gp.reset()
     
     if gp.collides_with_self():
-        game_on = False
-        score.game_over()
+        score.reset()
+        gp.reset()
 
     if gp.head.distance(food) < 15:
         food.move()
         gp.grow()
-        score.update_score()
+        score.increase_score()
 
 
 screen.exitonclick()

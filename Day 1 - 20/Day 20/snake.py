@@ -11,13 +11,19 @@ class Snake:
     def __init__(self, current_heading=EAST):
         self.snake_blocks = []
         self.current_heading = current_heading
-        for pos in starting_position:
-            snake_body = Turtle("square")
-            snake_body.color("black")
-            snake_body.penup()
-            snake_body.goto(pos)
-            self.snake_blocks.insert(0, snake_body)
+        self.create_snake()
         self.head = self.snake_blocks[len(self.snake_blocks)-1]
+
+    def create_snake(self):
+        for pos in starting_position:
+            self.add_block(pos)
+
+    def add_block(self, position):
+        snake_body = Turtle("square")
+        snake_body.color("black")
+        snake_body.penup()
+        snake_body.goto(position)
+        self.snake_blocks.insert(0, snake_body)
 
     def move(self):
          for block in self.snake_blocks:
@@ -63,4 +69,14 @@ class Snake:
             if self.head.distance(block) < 10:
                 return True
         return False
+    
+    def reset(self):
+        for block in self.snake_blocks:
+            block.goto(1000, 1000)
+            block.hideturtle()
+            
+        self.snake_blocks.clear()
+        self.create_snake()
+        self.head = self.snake_blocks[len(self.snake_blocks)-1]
+
         
