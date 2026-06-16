@@ -8,16 +8,27 @@ class Score(Turtle):
         self.goto(0,260)
         self.color("white")
         self.score = 0
-        self.high_score = 0
+        with open("highscore.txt") as file:
+            self.high_score = int(file.read())
         self.write(f"Score: {self.score}", align="center", font=("Arial", 22, "normal"))
 
     def update_score(self):
+        write = False
+        with open("highscore.txt") as file:
+            if int(file.read()) < self.high_score:
+                write = True
+        
+        if write:
+            with open("highscore.txt", mode="w") as file:
+                file.write(str(self.high_score))
+
         self.clear()
         self.write(f"Score: {self.score} High Score: {self.high_score}", align="center", font=("Arial", 22, "normal"))
 
     def reset(self):
-        if self.score > self.high_score:
-            self.high_score = self.score
+        with open("highscore.txt") as file:
+            if self.score > int(file.read()):
+                self.high_score = self.score
         self.score = 0
         self.update_score()
 
