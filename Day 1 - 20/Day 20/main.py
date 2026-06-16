@@ -17,6 +17,7 @@ screen.tracer(0)
 
 gp = Snake() #stands for growing python
 score = Score()
+score.update_score()
 food = Food()
 
 screen.listen()
