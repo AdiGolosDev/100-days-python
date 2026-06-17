@@ -1,0 +1,1 @@
+    user_input = screen.textinput(title=f"{correct}/50 - Guess the State", prompt="What other states do you know?")
