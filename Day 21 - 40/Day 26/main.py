@@ -29,8 +29,14 @@ print(passing_students)
 # pandas DataFrame comprehension
 import pandas
 student_dict = {
-    "students": ["James", "Angela", "Klokan"],
+    "student": ["James", "Angela", "Klokan"],
     "score": [50, 70, 22]
 }
 student_df = pandas.DataFrame(student_dict)
 print(student_df)
+
+for (index, row) in student_df.iterrows():
+    print(row.student)
+    print(row.score)
+    if row.student == "Klokan":
+        print("this guy is cool")
