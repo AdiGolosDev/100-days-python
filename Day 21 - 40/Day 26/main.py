@@ -16,3 +16,21 @@ print(short_names)
 
 long_cap_names = [name.upper() for name in names if len(name) > 4]
 print(long_cap_names)
+
+# dictionary comprehensions
+import random
+student_scores = {student:random.randint(1, 100) for student in names}
+print(student_scores)
+
+passing_students = {student:student_scores[student] for student in student_scores if student_scores[student] > 50} # first try
+passing_students = {student:score for (student, score) in student_scores.items() if score >= 60} # second try
+print(passing_students)
+
+# pandas DataFrame comprehension
+import pandas
+student_dict = {
+    "students": ["James", "Angela", "Klokan"],
+    "score": [50, 70, 22]
+}
+student_df = pandas.DataFrame(student_dict)
+print(student_df)
