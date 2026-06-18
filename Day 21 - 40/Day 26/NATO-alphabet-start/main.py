@@ -1,10 +1,7 @@
 import pandas
 
 df = pandas.read_csv("nato_phonetic_alphabet.csv")
-dict = {}
-
-for (index, row) in df.iterrows():
-    dict[row.letter] = row.code
+dict = {row.letter:row.code for (index, row) in df.iterrows()}
 
 on = True
 while on:
