@@ -1,4 +1,5 @@
 from tkinter import *
+import os
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -15,27 +16,33 @@ clock = None
 paused = False
 remaining = 0
 
+# ---------------------------- SOUND NOTIFICATION ------------------------------- # 
+def play_sound():
+    os.system("afplay /System/Library/Sounds/Glass.aiff")
+
 # ---------------------------- TIMER RESET & PAUSE ------------------------------- # 
 def reset():
-    global reps, clock
+    global reps, clock, remaining
     reps = 0
     window.after_cancel(clock)
     clock = 0
     canvas.itemconfig(timer_text, text=remaining_time_to_string(0))
+    remaining = 0
 
     timer.config(text="    Pomodoro Timer    ", fg="#000000", bg=YELLOW, font=(FONT_NAME, 48, "italic"))
     check_marks.config(text="")
 
 def pause():
-    global paused
+    global paused, remaining
     if not paused:
         paused = True
         window.after_cancel(clock)
         pause_button.config(text="resume")
     else:
-        paused = False
-        pause_button.config(text="pause")
-        count_down(remaining, final=(reps == 8))
+        if remaining != 0:
+            paused = False
+            pause_button.config(text="pause")
+            count_down(remaining, final=(reps == 8))
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start():
@@ -55,11 +62,17 @@ def start_work():
 def start_short_break():
     timer.config(text="#  Short Break Time  #", fg=GREEN)
     check_marks.config(text=check_marks.cget("text") + "✓")
+    play_sound()
+    window.lift()
+    window.focus_force()
     count_down(SHORT_BREAK_MIN * 60)
 
 def start_long_break():
     check_marks.config(text=check_marks.cget("text") + "✓")
     timer.config(text="Congratulations!\nYou must've finished\nsomething important today!", fg=DARK_GREEN, font=(FONT_NAME, 28, "italic"))
+    play_sound()
+    window.lift()
+    window.focus_force()
     count_down(LONG_BREAK_MIN * 60, final=True)
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -85,7 +98,7 @@ def count_down(count, final=False):
     remaining = count
     if count > 0:
         canvas.itemconfig(timer_text, text=remaining_time_to_string(count))
-        clock = window.after(1000, count_down, count - 1, final)
+        clock = window.after(5, count_down, count - 1, final)
     elif count == 0:
         if final:
             reset()
