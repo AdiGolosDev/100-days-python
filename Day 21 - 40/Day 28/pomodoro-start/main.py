@@ -1,5 +1,6 @@
 from tkinter import *
 import os
+import sys
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -15,6 +16,12 @@ reps = 0
 clock = None
 paused = False
 remaining = 0
+
+# ---------------------------- APP SETUP ------------------------------- # 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.dirname(__file__), relative_path)
 
 # ---------------------------- SOUND NOTIFICATION ------------------------------- # 
 def play_sound():
@@ -98,7 +105,7 @@ def count_down(count, final=False):
     remaining = count
     if count > 0:
         canvas.itemconfig(timer_text, text=remaining_time_to_string(count))
-        clock = window.after(5, count_down, count - 1, final)
+        clock = window.after(1000, count_down, count - 1, final)
     elif count == 0:
         if final:
             reset()
@@ -107,10 +114,10 @@ def count_down(count, final=False):
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
-window.title("Pomodoro Program")
+window.title("Adi Pomodoro")
 window.config(padx=50, pady=50, bg=YELLOW, width=600, height=500)
 
-tomato_image = PhotoImage(file="tomato.png")
+tomato_image = PhotoImage(file=resource_path("tomato.png"))
 canvas = Canvas(width=210, height=224, bg=YELLOW, highlightthickness=0)
 canvas.create_image(103, 112, image=tomato_image)
 timer_text = canvas.create_text(100, 130, text=remaining_time_to_string(0), fill="white", font=(FONT_NAME, 34, "bold"))
