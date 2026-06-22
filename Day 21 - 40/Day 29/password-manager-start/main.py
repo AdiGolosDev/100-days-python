@@ -5,7 +5,6 @@ import os
 import sys
 import json
 
-DATA_FILE = "klok-vault.json"
 FONT = "Inter"
 BG_COLOR = "#313244"
 LAYER_COLOR = "#45475a"
@@ -16,6 +15,13 @@ def resource_path(relative_path):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.dirname(__file__), relative_path)
 
+def get_data_file():
+    app_support = os.path.expanduser("~/Documents/klok-vault")
+    os.makedirs(app_support, exist_ok=True)
+    return os.path.join(app_support, "klok-vault.json")
+
+DATA_FILE = get_data_file()
+
 def load_data():
     try:
         with open(DATA_FILE, "r") as file:
@@ -24,11 +30,27 @@ def load_data():
         return {}
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password(length):
+    letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    digits = "0123456789"
+    symbols = "!@#$%^&*"
+    all_chars = letters + digits + symbols
+
+    password = [random.choice(letters), random.choice(digits), random.choice(symbols)]
+    password += [random.choice(all_chars) for _ in range(length - 3)]
+    random.shuffle(password)
+
+    return "".join(password)
+
 def generate_short_password():
-    pass
+    password = generate_password(16)
+    pass_entry.delete(0, END)
+    pass_entry.insert(0, password)
 
 def generate_long_password():
-    pass
+    password = generate_password(64)
+    pass_entry.delete(0, END)
+    pass_entry.insert(0, password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_entry():
@@ -67,14 +89,14 @@ def search_entry(*args):
     data = load_data()
 
     matches = {site: info for site, info in data.items()
-               if query in site.lower() or query in info["email"].lower()}
+               if query in site.lower() or query in info["user"].lower()}
     
     if not matches:
         search_result_user_text.config(text="No matches found")
         search_result_pass_text.config(text="-")
     elif len(matches) == 1:
         site, info = next(iter(matches.items()))
-        search_result_user_text.config(text=info["email"])
+        search_result_user_text.config(text=info["user"])
         search_result_pass_text.config(text=info["password"])
     else: #TODO build dropdown menu for multiple hits in query
         pass 
@@ -132,8 +154,16 @@ search_frame.grid(column=2, row=1, rowspan=4)
 search_label = Label(search_frame, text="Search Previous Entries", font=(FONT, 14, "bold"), bg=BG_COLOR, fg=TEXT_COLOR)
 search_label.pack(anchor=W)
 
-search_entry_widget = Entry(search_frame, width=24, font=(FONT, 12), bg=LAYER_COLOR, fg=TEXT_COLOR)
-search_entry_widget.pack(anchor=W, pady=8)
+search_input_frame = Frame(search_frame, bg=BG_COLOR)
+search_input_frame.pack(anchor=W, pady=8)
+
+search_entry_widget = Entry(search_input_frame, width=18, font=(FONT, 12), bg=LAYER_COLOR, fg=TEXT_COLOR)
+search_entry_widget.pack(side=LEFT)
+search_entry_widget.bind("<Return>", search_entry)
+
+search_button = Button(search_input_frame, text="⌕", font=(FONT, 14), command=search_entry, width=1, highlightthickness=1)
+search_button.pack(side=LEFT, padx=4)
+
 
 result_frame_user = Frame(search_frame, highlightthickness=0, bg=BG_COLOR)
 result_frame_user.pack(anchor=W)
