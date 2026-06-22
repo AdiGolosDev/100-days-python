@@ -101,7 +101,6 @@ def search_entry(*args):
     else: #TODO build dropdown menu for multiple hits in query
         pass 
 
-
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Klokan Password Manager")
@@ -129,7 +128,6 @@ web_entry.focus()
 
 user_entry = Entry(width=36, font=(FONT, 12), bg=LAYER_COLOR, fg=TEXT_COLOR)
 user_entry.grid(column=1, row=2, pady=4)
-user_entry.insert(END, "golos.adi.03@gmail.com")
 
 pass_entry = Entry(width=36, font=(FONT, 12), bg=LAYER_COLOR, fg=TEXT_COLOR)
 pass_entry.grid(column=1, row=3, pady=4)
@@ -163,7 +161,6 @@ search_entry_widget.bind("<Return>", search_entry)
 
 search_button = Button(search_input_frame, text="⌕", font=(FONT, 14), command=search_entry, width=1, highlightthickness=1)
 search_button.pack(side=LEFT, padx=4)
-
 
 result_frame_user = Frame(search_frame, highlightthickness=0, bg=BG_COLOR)
 result_frame_user.pack(anchor=W)
