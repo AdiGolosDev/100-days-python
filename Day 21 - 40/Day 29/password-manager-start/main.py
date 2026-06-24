@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import pyperclip
 import random
 import os
 import sys
@@ -44,11 +45,13 @@ def generate_password(length):
 
 def generate_short_password():
     password = generate_password(16)
+    pyperclip.copy(password)
     pass_entry.delete(0, END)
     pass_entry.insert(0, password)
 
 def generate_long_password():
     password = generate_password(64)
+    pyperclip.copy(password)
     pass_entry.delete(0, END)
     pass_entry.insert(0, password)
 
@@ -98,6 +101,7 @@ def search_entry(*args):
         site, info = next(iter(matches.items()))
         search_result_user_text.config(text=info["user"])
         search_result_pass_text.config(text=info["password"])
+        pyperclip.copy(info["password"])
     else: #TODO build dropdown menu for multiple hits in query
         pass 
 
