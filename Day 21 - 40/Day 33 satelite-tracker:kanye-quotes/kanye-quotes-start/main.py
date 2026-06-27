@@ -7,8 +7,6 @@ def get_quote():
     quote = response.json()["quote"]
 
     canvas.itemconfig(quote_text, text=quote)
-    
-
 
 window = Tk()
 window.title("Kanye Says...")
