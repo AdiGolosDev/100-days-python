@@ -22,3 +22,10 @@ class QuizBrain:
         correct_answer = self.current_question.answer
         if user_answer.lower() == correct_answer.lower():
             self.score += 1
+            return True
+        else:
+            return False
+    
+    def get_category(self):
+        category = html.unescape(self.question_list[self.question_number].category)
+        return category
