@@ -7,6 +7,7 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 auth_token = os.getenv("AUTH_TOKEN")
 phone_num = os.getenv("PHONE")
+other_phone_num = os.getenv("PHONE2")
 account_sid = os.getenv("ACCOUNT_SID")
 
 client = Client(account_sid, auth_token)
@@ -43,9 +44,16 @@ if rain:
 else:
     text = "There won't be rain in the next 15 hours. No need to think of bringing an umbrella."
 
+#sends whatsapp msg
 message = client.messages.create(
   from_='whatsapp:+14155238886',
   body=text,
   to=phone_num
 )
-print(message.sid)
+
+#sends sms
+message = client.messages.create(
+  from_='+18154066080',
+  body=text,
+  to=other_phone_num
+)
