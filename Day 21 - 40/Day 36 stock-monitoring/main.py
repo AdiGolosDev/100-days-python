@@ -1,5 +1,5 @@
 from requests_cache import CachedSession
-from datetime import timedelta
+from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 from twilio.rest import Client
@@ -8,9 +8,14 @@ load_dotenv()
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 ALPHAVANTAGE_API = os.getenv("ALPHA_V_API")
-account_sid = os.getenv("ACCOUNT_SID")
-auth_token = os.getenv("AUTH_TOKEN")
-phone_num = os.getenv("PHONE")
+NEWS_API = os.getenv("NEWS_API")
+ACCOUNT_SID = os.getenv("ACCOUNT_SID")
+AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+PHONE_NUM = os.getenv("PHONE")
+
+now = datetime.now()
+last_week = now - timedelta(weeks=1)
+last_week_str = str(last_week).split(" ")[0]
 
 av_params = {
     "function": "TIME_SERIES_DAILY",
@@ -18,26 +23,37 @@ av_params = {
     "apikey": ALPHAVANTAGE_API
 }
 
-## STEP 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-session = CachedSession('demo_cache', expire_after=timedelta(hours=12))
-r = session.get("https://www.alphavantage.co/query", params=av_params)
-print(r.from_cache)
-data = r.json()
+news_params = {
+    "q":COMPANY_NAME,
+    "from":last_week_str,
+    "sortBy":"popularity",
+    "apiKey":NEWS_API
+}
 
-time_series = data['Time Series (Daily)']
+session = CachedSession('stock_monitoring_cache', expire_after=timedelta(hours=24))
+stock_r = session.get("https://www.alphavantage.co/query", params=av_params)
+stock_data = stock_r.json()
+
+time_series = stock_data['Time Series (Daily)']
 date_list = list(time_series.keys())
 yesterday_close = float(time_series[date_list[0]]['4. close'])
 before_yesterday_close = float(time_series[date_list[1]]['4. close'])
 
-# initial attempt - i thought it looks ugly so i asked mr claude for help for the other version
-# day_stocks_list = list(data['Time Series (Daily)'].keys())
-# yesterday_closing = float(data['Time Series (Daily)'][day_stocks_list[0]]['4. close'])
-# before_yesterday_closing = float(data['Time Series (Daily)'][day_stocks_list[1]]['4. close'])
+num_change = yesterday_close - before_yesterday_close
+percent = (num_change / before_yesterday_close) * 100
+if num_change <= 0:
+    change = f"🔻 {num_change}"
+    percent_change = f"🔻 {percent:.2f}%"
+else:
+    change = f"🔺 {num_change}"
+    percent_change = f"🔺 {percent:.2f}%"
 
+if abs(percent) >= 5:
+    news_r = session.get("https://newsapi.org/v2/everything", params=news_params)
+    news_data = news_r.json()
+    articles = news_data['articles'][0:3]
 
-## STEP 2: Use https://newsapi.org
-# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
+    messages = [f"TSLA:\nDollar Change:{change}  Percent Change:{percent_change}\n{article['title']}\n{article['description']}" for article in articles]
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
