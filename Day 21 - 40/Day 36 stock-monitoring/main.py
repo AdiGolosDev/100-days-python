@@ -1,5 +1,5 @@
-import requests
-import requests_cache
+from requests_cache import CachedSession
+from datetime import timedelta
 import os
 from dotenv import load_dotenv
 from twilio.rest import Client
@@ -20,7 +20,9 @@ av_params = {
 
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-r = requests.get("https://www.alphavantage.co/query", params=av_params)
+session = CachedSession('demo_cache', expire_after=timedelta(hours=12))
+r = session.get("https://www.alphavantage.co/query", params=av_params)
+print(r.from_cache)
 data = r.json()
 
 time_series = data['Time Series (Daily)']
