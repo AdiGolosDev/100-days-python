@@ -42,31 +42,24 @@ before_yesterday_close = float(time_series[date_list[1]]['4. close'])
 num_change = yesterday_close - before_yesterday_close
 percent = (num_change / before_yesterday_close) * 100
 if num_change <= 0:
-    change = f"🔻 {num_change}"
+    change = f"🔻 {num_change:.2f}"
     percent_change = f"🔻 {percent:.2f}%"
 else:
-    change = f"🔺 {num_change}"
+    change = f"🔺 {num_change:.2f}"
     percent_change = f"🔺 {percent:.2f}%"
 
-if abs(percent) >= 5:
-    news_r = session.get("https://newsapi.org/v2/everything", params=news_params)
-    news_data = news_r.json()
-    articles = news_data['articles'][0:3]
+# if abs(percent) >= 5:
+news_r = session.get("https://newsapi.org/v2/everything", params=news_params)
+news_data = news_r.json()
+articles = news_data['articles'][0:3]
 
-    messages = [f"TSLA:\nDollar Change:{change}  Percent Change:{percent_change}\n{article['title']}\n{article['description']}" for article in articles]
+messages = [f"TSLA:\nDollar Change:{change}💵\nPercent Change:{percent_change}\n{article['title']}\n{article['description']}\n" for article in articles]
+msg = "\n".join(messages)
 
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number. 
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
-
+message = client.messages.create(
+  from_='whatsapp:+14155238886',
+  body=msg,
+  to=PHONE_NUM
+)
