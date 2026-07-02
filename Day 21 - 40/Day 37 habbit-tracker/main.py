@@ -5,15 +5,18 @@ from datetime import datetime
 
 load_dotenv()
 
+# my professional snake of code :)
+# today = str(datetime.now()).split(" ")[0].replace("-", "")
 t = datetime.now()
-today = str(t).split(" ")[0].replace("-", "")
+# t = datetime(year=2026, month=7, day=1)
+today = t.strftime("%Y%m%d")
 
 pixela_endpoint = "https://pixe.la/v1/users"
 TOKEN = os.getenv("TOKEN")
 USERNAME = os.getenv("USERNAME")
 GRAPH_ID = "read"
 graph_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs"
-pixel_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs/{GRAPH_ID}"
+pix_endpoint = f"{graph_endpoint}/{GRAPH_ID}"
 
 user_params = {
     "token": TOKEN,
@@ -36,12 +39,11 @@ headers = {
 
 pixel_config = {
     "date": today,
-    "quantity": "20"
+    "quantity": "30"
 }
 
 # requests.post(url=pixela_endpoint, json=user_params)
 # response = requests.post(url=graph_endpoint, json=graph_config, headers=headers)
-response = requests.post(url=pixel_endpoint, json=pixel_config, headers=headers)
+response = requests.post(url=pix_endpoint, json=pixel_config, headers=headers)
 print(response)
-data = response.json()
-print(data["message"])
+print(response.json()["message"])
