@@ -17,6 +17,7 @@ USERNAME = os.getenv("USERNAME")
 GRAPH_ID = "read"
 graph_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs"
 pix_endpoint = f"{graph_endpoint}/{GRAPH_ID}"
+update_endpoint = f"{pix_endpoint}/{today}"
 
 user_params = {
     "token": TOKEN,
@@ -39,11 +40,20 @@ headers = {
 
 pixel_config = {
     "date": today,
-    "quantity": "30"
+    "quantity": "50"
+}
+
+update_config = {
+    "quantity": "120"
 }
 
 # requests.post(url=pixela_endpoint, json=user_params)
 # response = requests.post(url=graph_endpoint, json=graph_config, headers=headers)
-response = requests.post(url=pix_endpoint, json=pixel_config, headers=headers)
+
+# response = requests.post(url=pix_endpoint, json=pixel_config, headers=headers)
+# print(response)
+# print(response.json()["message"])
+
+response = requests.put(url=update_endpoint, json=update_config, headers=headers)
 print(response)
 print(response.json()["message"])
