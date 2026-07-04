@@ -54,6 +54,12 @@ update_config = {
 # print(response)
 # print(response.json()["message"])
 
-response = requests.put(url=update_endpoint, json=update_config, headers=headers)
+#update
+# response = requests.put(url=update_endpoint, json=update_config, headers=headers)
+# print(response)
+# print(response.json()["message"])
+
+#delete
+response = requests.delete(url=update_endpoint, headers=headers)
 print(response)
 print(response.json()["message"])
