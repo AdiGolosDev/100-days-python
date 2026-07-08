@@ -15,7 +15,8 @@ class DataManager:
         print(self.response)
         return(self.response)
 
-    def post(self, city, iata_code, lowest_price):
+    def post(self, row_id, city, iata_code, lowest_price):
+        url = f"{self.sheety_url}/{row_id}"
         self.price = {
             "price": {
                 "city": city,
@@ -24,6 +25,6 @@ class DataManager:
             }
         }
 
-        self.response = self.session.post(url=self.sheety_url, json=self.price, headers=self.sheety_header)
+        self.response = self.session.put(url=url, json=self.price, headers=self.sheety_header)
         print(self.response)
         return(self.response)

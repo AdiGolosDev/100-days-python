@@ -9,17 +9,14 @@ class FlightSearch:
         self.session = CachedSession("flight_cache", expire_after=timedelta(hours=1))
 
     def search_flights(self, arrival_id):
-        today = datetime.today()
-        outbound_date = (today)
-
         params = {
             "engine": "google_travel_explore",
             "api_key": self.api_key,
-            "departure_id": "VIE", # flights from vienna
+            "departure_id": "SJJ", # flights from sarajevo
             "arrival_id": arrival_id,
             "currency": "EUR",
             "hl": "en",
-            "gl": "at",
+            "gl": "ba",
             "month": 0,
             "duration": 2
         }
