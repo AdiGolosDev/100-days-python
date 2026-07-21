@@ -3,11 +3,8 @@ import requests
 import json
 
 response = requests.get("https://www.theguardian.com/books/ng-interactive/2026/may/12/the-100-best-novels-of-all-time")
-
 guardian_text = response.text
-
 soup = BeautifulSoup(guardian_text, "html.parser")
-
 book_names = soup.select(selector=".bold.svelte-1tpye3j")
 
 i = 100
