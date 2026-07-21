@@ -11,6 +11,12 @@ print(soup.title.text)
 # titles = soup.select(selector=".titleline > a")
 # titles = soup.find_all(name="span", class_="titleline")
 titles = soup.select(selector=".titleline")
+scores = soup.select(selector=".score")
+s = []
+for score in scores:
+    s.append(score.text)
+
+
 # t = {}
 # for title in titles:
 #     link = title.find("a")
@@ -19,18 +25,28 @@ titles = soup.select(selector=".titleline")
 # print(t)
 
 l = []
+i = 0
 for title in titles:
     d = {}
     link = title.find("a")
     d["title"] = link.text
     d["link"] = link.get("href")
+    d["upvotes"] = s[i]
+    i+=1
     l.append(d)
 
-print(l)
+print(l[0])
 
+highest = l[0]
+for _ in l:
+    if int(_["upvotes"].split(' ')[0]) > int(highest["upvotes"].split(' ')[0]):
+        highest = _
 
+print(highest)
 
-
+# data that is available publicly and not copyrighted is probably okay to scrape
+# you can't commercialize copyrighted content
+# can't scrape data behind authentication
 
 
 # with open("website.html") as file:
