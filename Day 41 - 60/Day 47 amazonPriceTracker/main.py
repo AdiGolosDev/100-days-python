@@ -22,12 +22,8 @@ headers = {
 }
 
 response = requests.get(url, headers=headers)
-# print(response.status_code)
-# print(response.text[:2000])
 amazon_text = response.text
 soup = BeautifulSoup(amazon_text, "html.parser")
-price = soup.select(selector=".a-price-whole")
-print(price)
-print("a-price-whole" in amazon_text)
-print("a-offscreen" in amazon_text)
-# 	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36
+price = soup.select(selector=".a-offscreen")
+for p in price:
+      print(p.text)
