@@ -30,11 +30,23 @@ wait.until(ec.presence_of_all_elements_located((By.ID, "schedule-page")))
 
 classes_booked = 0
 waitlists_joined = 0
-booked_waitlisted = 0
 days = driver.find_elements(By.CLASS_NAME, value="Schedule_dayGroup__y79__")
+appointments = []
+
+def print_class(day, card, bw):
+    appointments.append(card)
+    date = day.find_element(By.CSS_SELECTOR, value="h2[id^='day-title-']")
+    time = card.find_element(By.CSS_SELECTOR, value="p[id^='class-time-']")
+    details = card.find_elements(By.CSS_SELECTOR, value="p[class^='ClassCard_classDetail']")
+    details_string = f""
+    for d in details:
+        details_string += d.text + "\n"
+    print(f"Class on {date.text}, at {time.text} {bw}\nDetails:\n{details_string}")
+
+
 
 for day in days:
-    if "Tue" in day.text:
+    if "Tue" in day.text or "Thu" in day.text:
         classes = day.find_elements(By.CLASS_NAME, value="ClassCard_card__KpCx5")
         for c in classes:
             if "6:00 PM" in c.text:
@@ -42,27 +54,24 @@ for day in days:
                     button = c.find_element(By.CSS_SELECTOR, value="button")
                     if button.text.lower() == "booked":
                         print("Already Booked!")
-                        booked_waitlisted += 1
                         break
                     elif button.text.lower() == "waitlisted":
                         print("Already Waitlisted!")
-                        booked_waitlisted += 1
                         break
                     elif button.text.lower() == "book class":
                         button.click()
-                        print("Booked a class for Tue, 6 PM")
+                        print_class(day, c, "booked")
                         classes_booked += 1
                     elif button.text.lower() == "join waitlist":
                         button.click()
-                        print("Joined waiting list for class on Tue, 6 PM")
+                        print_class(day, c, "wait-listed")
                         waitlists_joined += 1
                 except NoSuchElementException:
-                    print("found the Tue 6 PM class, but couldn't book for some reason...")
+                    print("found the class, but couldn't book for some reason...")
                 break
-        break
 
+booked_waitlisted = len(appointments)
 print(f"--- BOOKING SUMMARY ---\nClasses booked: {classes_booked}\nWaiting lists joined: {waitlists_joined}\nAlready Booked/Wait-listed: {booked_waitlisted}")
-
 
 input("enter to quit")
 driver.quit()
