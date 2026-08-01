@@ -43,8 +43,6 @@ def print_class(day, card, bw):
         details_string += d.text + "\n"
     print(f"Class on {date.text}, at {time.text} {bw}\nDetails:\n{details_string}")
 
-
-
 for day in days:
     if "Tue" in day.text or "Thu" in day.text:
         classes = day.find_elements(By.CLASS_NAME, value="ClassCard_card__KpCx5")
@@ -54,9 +52,11 @@ for day in days:
                     button = c.find_element(By.CSS_SELECTOR, value="button")
                     if button.text.lower() == "booked":
                         print("Already Booked!")
+                        appointments.append(c)
                         break
                     elif button.text.lower() == "waitlisted":
                         print("Already Waitlisted!")
+                        appointments.append(c)
                         break
                     elif button.text.lower() == "book class":
                         button.click()
@@ -72,6 +72,17 @@ for day in days:
 
 booked_waitlisted = len(appointments)
 print(f"--- BOOKING SUMMARY ---\nClasses booked: {classes_booked}\nWaiting lists joined: {waitlists_joined}\nAlready Booked/Wait-listed: {booked_waitlisted}")
+
+bookings_link = driver.find_element(By.ID, value="my-bookings-link")
+bookings_link.click()
+try:
+    bookings = len(driver.find_elements(By.CLASS_NAME, value="MyBookings_bookingCard__VRdrR"))
+    if len(appointments) == bookings:
+        print("everything good!")
+    else:
+        print("something uneven...")
+except NoSuchElementException:
+    print("something wrong...")
 
 input("enter to quit")
 driver.quit()
