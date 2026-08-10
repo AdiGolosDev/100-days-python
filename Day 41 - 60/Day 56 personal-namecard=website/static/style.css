@@ -1,0 +1,82 @@
+body {
+    background-color: #14151a;
+    color: #d8d6ce;
+    font-family: Georgia, 'Times New Roman', serif;
+    margin: 0;
+    padding: 30px 20px;
+}
+ 
+h1, h3 {
+    color: #c9a24b;
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.5px;
+}
+ 
+a {
+    color: #c9a24b;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201, 162, 75, 0.4);
+}
+ 
+a:hover {
+    color: #e9c876;
+    border-bottom-color: #e9c876;
+}
+ 
+hr {
+    border: none;
+    border-top: 1px solid rgba(201, 162, 75, 0.25);
+    margin: 28px 0;
+}
+ 
+/* Header / portrait block — deep fog gray */
+.header-section {
+    background: linear-gradient(135deg, #1c1e26, #23222c);
+    border: 1px solid rgba(201, 162, 75, 0.15);
+    border-radius: 10px;
+    padding: 10px;
+}
+ 
+/* Pathways list — muted indigo, echoes the Gray Fog */
+.pathways-section {
+    background-color: #1a1c24;
+    border-left: 3px solid #4b4f6b;
+    border-radius: 6px;
+    padding: 16px 24px;
+}
+ 
+/* Klein's ascension bio + table — warm charcoal with a hint of gold */
+.ascension-section {
+    background-color: #1e1a17;
+    border-left: 3px solid #6b5a2f;
+    border-radius: 6px;
+    padding: 16px 24px;
+}
+ 
+.ascension-section table {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    overflow: hidden;
+}
+ 
+.ascension-section th {
+    background-color: rgba(201, 162, 75, 0.12);
+    color: #e9c876;
+    text-align: left;
+    padding: 6px 12px;
+}
+ 
+.ascension-section td {
+    padding: 6px 12px;
+}
+ 
+/* Footer links — deep crimson-tinged gray, evoking the Church of the Fool */
+.links-section {
+    background-color: #1f1a1c;
+    border-left: 3px solid #6b3f3f;
+    border-radius: 6px;
+    padding: 16px 24px;
+    display: flex;
+    gap: 24px;
+}
+ 
