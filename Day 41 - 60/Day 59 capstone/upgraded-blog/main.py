@@ -1,12 +1,14 @@
 from flask import Flask, render_template
+import json
 
-all_posts = [] # need to actually add posts and figure out what format to do for this
+with open("posts.json", "r", encoding="utf-8") as f:
+    all_posts = json.load(f)
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', posts=all_posts)
 
 @app.route('/about')
 def about():
@@ -19,9 +21,9 @@ def contact():
 @app.route('/post/<int:pid>')
 def post(pid):
     requested_post = None
-    for post in all_posts:
-        if post["id"] == pid:
-            requested_post = post
+    for p in all_posts:
+        if p["id"] == pid:
+            requested_post = p
             break
     return render_template('post.html', id=requested_post)
 
