@@ -25,7 +25,7 @@ def post(pid):
         if p["id"] == pid:
             requested_post = p
             break
-    return render_template('post.html', id=requested_post)
+    return render_template('post.html', post=requested_post)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
