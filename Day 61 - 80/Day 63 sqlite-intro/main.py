@@ -42,9 +42,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    cursor.execute("SELECT * FROM books")
+    sort = request.args.get("sort", "desc")
+
+    if sort == "asc":
+        cursor.execute("SELECT * FROM books ORDER BY rating ASC")
+    else:
+        cursor.execute("SELECT * FROM books ORDER BY rating DESC")
+
     all_books = cursor.fetchall()
-    return render_template('index.html', books=all_books)
+    return render_template('index.html', books=all_books, sort=sort)
 
 @app.route("/add", methods=["GET", "POST"])
 def add():

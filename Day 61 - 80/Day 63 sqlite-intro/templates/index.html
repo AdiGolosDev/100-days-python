@@ -6,6 +6,10 @@
   </head>
   <body>
     <h1>My Library</h1>
+
+    <a href="{{ url_for('index', sort='asc') }}">Sort by rating ascending</a>
+    <a href="{{ url_for('index', sort='desc') }}">Sort by rating descending</a>
+
     <ul>
       {% if not books: %}
         <li>The library is empty</li>
