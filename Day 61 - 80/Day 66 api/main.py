@@ -65,9 +65,61 @@ def get_cafe_at_location():
 
 # HTTP POST - Create Record
 
+@app.route("/add", methods=["POST"])
+def post_new_cafe():
+    new_cafe = Cafe(
+        name=request.form.get("name"),
+        map_url=request.form.get("map_url"),
+        img_url=request.form.get("img_url"),
+        location=request.form.get("loc"),
+        has_sockets=request.form.get("sockets"),
+        has_toilet=request.form.get("toilet"),
+        has_wifi=request.form.get("wifi"),
+        can_take_calls=request.form.get("calls"),
+        seats=request.form.get("seats"),
+        coffee_price=request.form.get("coffee_price"),
+    )
+    db.session.add(new_cafe)
+    db.session.commit()
+    return jsonify(response={"Success": "Successfully added the new cafe."})
+
 # HTTP PUT/PATCH - Update Record
 
+@app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
+def patch_new_price(cafe_id):
+    new_price = request.args.get("new_price")
+    try:
+        cafe = db.get(Cafe, cafe_id)
+    except AttributeError:
+        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
+    else:
+        cafe.coffee_price = new_price
+        db.session.commit()
+        return jsonify(response={"Success": "Successfully updated the price."}), 200
+    # new_price = request.args.get("new_price")
+    # cafe = db.session.get(entity=Cafe, id=cafe_id)
+    # if cafe:
+    #     cafe.coffee_price = new_price
+    #     db.session.commit()
+    #     return jsonify(response={"Success": "Successfully updated the price."}), 200
+    # else:
+    #     return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
+
 # HTTP DELETE - Delete Record
+@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    api_key = request.args.get("api-key")
+    if api_key == "TopSecretAPIKey":
+        try:
+            cafe = db.get(Cafe, cafe_id)
+        except AttributeError:
+            return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
+        else:
+            db.session.delete(cafe)
+            db.session.commit()
+            return jsonify(response={"Success": "Successfully updated the price."}), 200
+    else:
+        return jsonify(error={"Forbidden": "Sorry, that's a no no. Make sure you have the right api key."}), 403
 
 
 if __name__ == '__main__':
