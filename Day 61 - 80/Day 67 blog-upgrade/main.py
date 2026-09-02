@@ -9,19 +9,6 @@ from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 from datetime import date
 
-'''
-Make sure the required packages are installed: 
-Open the Terminal in PyCharm (bottom left). 
-
-On Windows type:
-python -m pip install -r requirements.txt
-
-On MacOS type:
-pip3 install -r requirements.txt
-
-This will install the packages from the requirements.txt for this project.
-'''
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 ckeditor = CKEditor(app)
@@ -81,7 +68,6 @@ def add_new_post():
         return redirect(url_for('get_all_posts'))
     return render_template("make-post.html", form=form, is_edit=False)
 
-# TODO: edit_post() to change an existing blog post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
@@ -102,18 +88,20 @@ def edit_post(post_id):
         return redirect(url_for("show_post", post_id=post.id))
     return render_template("make-post.html", form=edit_form, is_edit=True)
 
-# TODO: delete_post() to remove a blog post from the database
+@app.route("/delete/<int:post_id>")
+def delete_post(post_id):
+    post_to_delete = db.get_or_404(BlogPost, post_id)
+    db.session.delete(post_to_delete)
+    db.session.commit()
+    return redirect(url_for('get_all_posts'))
 
-# Below is the code from previous lessons. No changes needed.
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
